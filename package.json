@@ -2,6 +2,7 @@
   "name": "restraunt_qr_backend",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon index.js"
   },
@@ -9,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongoose": "^8.10.0"
   }
