@@ -43,23 +43,46 @@ export const registerUserService = async (body) => {
 }
 
 export const loginUserService = async (body) => {
-    const { email, password } = body;
+    try {
+        const { email, password } = body;
 
-    const user = await User.findOne({ email });
-    if (!user) {
-        const error = new Error('User Already Exists, Pleasy Try Again with a New Phone Number');
-        error.code = 401;
+        const user = await User.findOne({ email });
+        if (!user) {
+            const error = new Error('User Already Exists, Pleasy Try Again with a New Email');
+            error.code = 401;
+            throw error;
+        }
+
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        if (!isPasswordCorrect) {
+            const error = new Error('Password Does Not Match, Check it Again');
+            error.code = 401;
+            throw error;
+        }
+
+        const token = await jwt.sign({ userId: user._id, email: user.email, role: user.role }, process.env.JWT_SECRET);
+
+        return token;
+    }
+    catch (error) {
+        console.log('Error in loginUserService:', error.message)
         throw error;
     }
+}
 
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-        const error = new Error('Password Does Not Match, Check it Again');
-        error.code = 401;
+export const getAllUsersService = async () => {
+    try {
+        let users = await User.find();
+        if (!users) {
+            const error = new Error('No Users Found');
+            error.code = 404;
+            throw error;
+        }
+
+        return users;
+    }
+    catch (error) {
+        console.log('Error in getAllUsersService:', error.message)
         throw error;
     }
-
-    const token = await jwt.sign({ userId: user._id, email: user.email, role: user.role }, process.env.JWT_SECRET);
-
-    return token;
 }
