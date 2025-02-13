@@ -22,3 +22,20 @@ export const createRestaurantService = async (user, body) => {
         throw error;
     }
 };
+
+export const getRestaurantsService = async (user) => {
+    try {
+        let userId = user.userId;
+
+        let restaurants = await Restraunt.find({ owner: userId });
+        if (!restaurants) {
+            throw { code: 404, message: 'No Restraurants Found' };
+        }
+
+        return restaurants;
+    }
+    catch (error) {
+        console.log('Error in createRestrauntService:', error.message)
+        throw error;
+    }
+}

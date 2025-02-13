@@ -1,4 +1,4 @@
-import { createRestaurantService } from "../services/restraunt.service.js";
+import { createRestaurantService, getRestaurantsService } from "../services/restraunt.service.js";
 
 
 export const createRestraunt = async (req, res) => {
@@ -11,6 +11,25 @@ export const createRestraunt = async (req, res) => {
         });
     }
     catch (error) {
+        const statusCode = error.code || 500;
+
+        res.status(statusCode).json({
+            code: statusCode,
+            message: error.message || 'An Unexpected Error Occurred'
+        });
+    }
+}
+
+export const getOwnerRestraunts=async(req, res)=>{
+    try{
+        let restaurants = await getRestaurantsService(req.user);
+        res.status(201).json({
+            code: 201,
+            restaurants: restaurants,
+            message: "New Restraunt Created Successfully"
+        });
+    }
+    catch(error){
         const statusCode = error.code || 500;
 
         res.status(statusCode).json({
