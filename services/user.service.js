@@ -59,7 +59,7 @@ export const loginUserService = async (body) => {
         throw error;
     }
 
-    const token = await jwt.sign({ userId: user._id, email: user.email }, process.env.JWT_SECRET);
+    const token = await jwt.sign({ userId: user._id, email: user.email, role: user.role }, process.env.JWT_SECRET);
 
     return token;
 }
