@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 const restrauntSchema = new mongoose.Schema({
     name: {
@@ -24,8 +24,7 @@ const restrauntSchema = new mongoose.Schema({
         ref: "MenuItem"
     }],
     qrCode: {
-        type: String,
-        required: true
+        type: String
     }
 }, { timestamps: true });
 
