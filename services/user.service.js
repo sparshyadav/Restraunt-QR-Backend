@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 export const registerUserService = async (body) => {
     try {
-        let { name, email, phone, password } = body;
+        let { name, email, phone, password, role } = body;
 
         let user = await User.findOne({ email });
         if (user) {
@@ -20,9 +20,18 @@ export const registerUserService = async (body) => {
             throw error;
         }
 
+        if (role === "admin") {
+            user = await User.findOne({ role });
+            if (user) {
+                const error = new Error('User Admin Already Exists, Pleasy Try Again with Owner Role');
+                error.code = 401;
+                throw error;
+            }
+        }
+
         let hashedPassword = await bcrypt.hash(password, 10);
         user = await User.create({
-            name, email, phone, password: hashedPassword
+            name, email, phone, password: hashedPassword, role
         });
 
         return user;
