@@ -48,7 +48,10 @@ export const getMenuService = async (restaurantId) => {
             throw { code: 404, message: 'No Restaurant Found' };
         }
 
-        return restaurant.menu;
+        restaurant.qrCode = await generateQRCode(restaurant._id);
+        await restaurant.save();
+
+        return restaurant;
     } catch (error) {
         console.error('Error in getMenuService:', error.message);
         throw error;

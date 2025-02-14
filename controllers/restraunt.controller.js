@@ -20,8 +20,8 @@ export const createRestraunt = async (req, res) => {
     }
 }
 
-export const getOwnerRestraunts=async(req, res)=>{
-    try{
+export const getOwnerRestraunts = async (req, res) => {
+    try {
         let restaurants = await getRestaurantsService(req.user);
         res.status(201).json({
             code: 201,
@@ -29,7 +29,7 @@ export const getOwnerRestraunts=async(req, res)=>{
             message: "New Restraunt Created Successfully"
         });
     }
-    catch(error){
+    catch (error) {
         const statusCode = error.code || 500;
 
         res.status(statusCode).json({
@@ -39,16 +39,16 @@ export const getOwnerRestraunts=async(req, res)=>{
     }
 }
 
-export const getMenu=async(req, res)=>{
-    try{
-        let menu = await getMenuService(req.params.restaurantId);
+export const getMenu = async (req, res) => {
+    try {
+        let restaurant = await getMenuService(req.params.restaurantId);
         res.status(201).json({
             code: 201,
-            menu: menu,
+            restaurant: restaurant,
             message: "Restaurant Menu Sent Successfully"
         });
     }
-    catch(error){
+    catch (error) {
         const statusCode = error.code || 500;
 
         res.status(statusCode).json({
