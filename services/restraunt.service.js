@@ -39,3 +39,18 @@ export const getRestaurantsService = async (user) => {
         throw error;
     }
 }
+
+export const getMenuService = async (restaurantId) => {
+    try {
+        let restaurant = await Restraunt.findOne({ _id: restaurantId }).populate('menu');
+
+        if (!restaurant) {
+            throw { code: 404, message: 'No Restaurant Found' };
+        }
+
+        return restaurant.menu;
+    } catch (error) {
+        console.error('Error in getMenuService:', error.message);
+        throw error;
+    }
+};
